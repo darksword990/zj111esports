@@ -4,7 +4,7 @@ module.exports = {
     aliases: ['av'],
     category: `essentials`,
     usage: `<member mention/member id>(optional)`,
-    examples: ['@Crawler', '767858235465342'],
+    examples: ['@Crawler', '767858235465342', 'crawler', 'thor'],
     run: async (client, message, args, prefix) => {
         if (!args.length) {
             return message.channel.send(
@@ -22,7 +22,11 @@ module.exports = {
                 }
             )
         }
-        const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(f => f.displayName.includes(args.join(" ")))
+        let strings = []
+        for (const arg of args) {
+            strings.push(arg.toLowerCase())
+        }
+        const member = message.guild.members.cache.find(f => f.displayName.toLowerCase().includes(strings.join(" "))) || message.mentions.members.first() || message.guild.members.cache.get(args[0])
         if (member) {
             message.channel.send(
                 {
